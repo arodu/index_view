@@ -1,0 +1,21 @@
+{
+  "name": "index_view",
+  "authors": [
+    "Alberto Rodriguez <arod.unerg@gmail.com>"
+  ],
+  "description": "",
+  "main": "index.php",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
