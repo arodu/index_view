@@ -5,7 +5,7 @@
     $bookmark_file = $data_dir.'bookmarks.json';
 
     function getFiles($path){
-        $deny_file = ['', '.', '..', 'index', 'index.php'];
+        $deny_file = ['', '.', '..', 'index', 'index_view', 'index.php'];
         $rep = opendir($_SERVER['DOCUMENT_ROOT'].$path);
         $out = [];
         while ($file = readdir($rep)){
@@ -22,13 +22,15 @@
         return $out;
     }
 
-    function getFileLink($path, $name){
-        if(file_exists($_SERVER['DOCUMENT_ROOT'].$path)){
+    function getFileLink($path, $name, $dir = false){
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].$path) && !$dir){
+            return '<li><a href="'.$path.'">'.$name.'</a></li>';
+        }elseif(file_exists($dir)){
             return '<li><a href="'.$path.'">'.$name.'</a></li>';
         }
         return false;
     }
-    
+
     function getBookmarks(){
         global $bookmark_file;
         if(file_exists($bookmark_file)){
@@ -41,7 +43,7 @@
             return false;
         }
     }
-    
+
     function setFlash($type, $msg){
         $_SESSION['msg_flash'][] = array(
             'type'=>$type,
@@ -49,7 +51,7 @@
         );
         return true;
     }
-    
+
     function printFlash($close = true){
         global $lang;
         $alert = '';
@@ -62,7 +64,7 @@
                 }else{
                     $class = 'alert-info';
                 }
-                
+
                 $alert .= '<div class="alert '.$class.'">'.$lang[$flash['msg']].'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
             }
             if($close){
