@@ -1,4 +1,4 @@
-<?php 
+<?php
     $config = [
         'server_software' => @array_shift(explode(' ', $_SERVER['SERVER_SOFTWARE'])),
         'lang' => substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2),
@@ -9,15 +9,14 @@
         'server_addr' => $_SERVER['SERVER_ADDR'],
         'php_version' => phpversion(),
     ];
-    
-    
+
     if(file_exists($dir.'/lang/'.$config['lang'].'.php')){
         include($dir.'/lang/'.$config['lang'].'.php');
     }else{
         include($dir.'/lang/en.php');
     }
-    
-    include($dir.'/bin/functions.php'); 
+
+    include($dir.'/bin/functions.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,7 +26,7 @@
     <title><?= $config['server_name'] ?></title>
     <link rel="stylesheet" href="<?php echo $index_path.'/vendor/bootstrap/dist/css/bootstrap.min.css'?>" />
     <link rel="stylesheet" href="<?php echo $index_path.'/bin/css/style.css'?>" />
-    
+
     <style media="screen">
         .list-group-hover {
             color: #555;
@@ -35,7 +34,7 @@
             background-color: #f5f5f5;
         }
     </style>
-    
+
 </head>
 <body>
 
@@ -52,14 +51,14 @@
                 <a class="navbar-brand" href="<?= $config['path'] ?>"><?php echo $config['server_software'] ?></a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
-                
+
                 <p class="navbar-text">
                     <span class="badge"><span class="glyphicon glyphicon-map-marker"></span><?= $config['remote_addr'] ?></span>
                     <span class="glyphicon glyphicon-resize-horizontal"></span>
                     <span class="badge"><span class="glyphicon glyphicon-globe"></span><?= $config['server_addr'] ?></span>
                 </p>
-                
-                
+
+
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#" data-toggle="modal" data-target="#bookmarkModal" data-type="add"><span class="glyphicon glyphicon-plus"></span><?= $lang['add'] ?></a></li>
                     <li class="dropdown">
@@ -68,30 +67,31 @@
                             <?php echo getFileLink($index_path.'/bin/info.php', 'PHP Info') ?>
                             <?php echo getFileLink('/phpmyadmin', 'PhpMyAdmin') ?>
                             <?php echo getFileLink('/PhpMyAdmin', 'PhpMyAdmin') ?>
+                            <?php echo getFileLink('/phpmyadmin', 'PhpMyAdmin', '/usr/share/webapps/phpMyAdmin') ?>
                         </ul>
                     </li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
     </nav>
-    
+
     <div class="container">
-        
+
         <?php  if(!is_writable($data_dir)): ?>
             <div class="alert alert-warning">
                 <strong>Warning: </strong><?php printf($lang['no_write'], $data_dir); ?>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
         <?php endif; ?>
-        
+
         <?= printFlash() ?>
-        
+
         <div class="row">
             <div class="col-sm-6">
                 <div class="panel panel-info">
                     <div class="panel-heading"><?= $lang['bookmarks'] ?></div>
                     <div class="list-group">
-                        <?php 
+                        <?php
                             $bookmarks = getBookmarks();
                             if(!empty($bookmarks)){
                                 foreach ($bookmarks as $id => $bookmark):
@@ -129,7 +129,7 @@
                                     case 'link': $icon='glyphicon glyphicon-link'; break;
                                     default: $icon='glyphicon glyphicon-file'; break;
                                 }
-                                    
+
                                 /*
                                 $icon = function($file['type']){
                                     switch($file['type']){
@@ -139,7 +139,7 @@
                                         default: return 'glyphicon glyphicon-file';
                                     }
                                 } */
-                                    
+
                                 ?>
                                 <span class="list-group-item" >
                                     <a href="<?= $file['route'] ?>">
@@ -161,7 +161,7 @@
             </div>
         </div>
     </div>
-    
+
     <footer class="footer">
         <div class="container">
             <div class="col-md-6 text-left">
@@ -172,7 +172,7 @@
             </div>
         </div>
     </footer>
-    
+
     <div class="modal fade" id="bookmarkModal" tabindex="-1" role="dialog" aria-labelledby="bookmarkModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -190,7 +190,7 @@
                         <label for="input-url" class="control-label"><?= $lang['url'] ?></label>
                         <input id="input-url" type="text" class="form-control" name="url" value="http://" required="required" />
                     </div>
-                    
+
                     <input id="input-type" type="hidden" name="type" value="add" />
                     <input id="index-path" type="hidden" name="path" value="<?= $index_path ?>" />
                     <input id="input-id" type="hidden" name="id" value="" />
@@ -203,7 +203,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="bookmarkDeleteModal" tabindex="-1" role="dialog" aria-labelledby="bookmarkDeleteModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -222,7 +222,7 @@
                     <input id="delete-index-path" type="hidden" name="path" value="<?= $index_path ?>" />
                     <input id="delete-input-id" type="hidden" name="id" value="" />
                 </div>
-                
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><?= $lang['close'] ?></button>
                     <input type="submit" class="btn btn-danger" value="<?= $lang['delete'] ?>" />
@@ -231,10 +231,10 @@
             </div>
         </div>
     </div>
-    
+
     <script src="<?php echo $index_path.'/vendor/jquery/dist/jquery.min.js' ?>" charset="utf-8"></script>
     <script src="<?php echo $index_path.'/vendor/bootstrap/dist/js/bootstrap.min.js' ?>" charset="utf-8"></script>
-    
+
     <script type="text/javascript">
         $(function(){
             $('#bookmarkModal').on('show.bs.modal', function (event) {
@@ -246,32 +246,32 @@
                 }else if(type == 'edit'){
                     modal.find('.modal-title').text('<?= $lang['bookmarks'].': '.$lang['edit']?>')
                 }
-                
+
                 modal.find('#input-name').val('')
                 if(button.data('name') != undefined){
                     modal.find('#input-name').val( button.data('name') )
                 }
-                
+
                 modal.find('#input-url').val('http://')
                 if(button.data('url') != undefined){
                     modal.find('#input-url').val(button.data('url'))
                 }
-                
+
                 modal.find('#input-id').val('')
                 if(button.data('id') != undefined){
                     modal.find('#input-id').val(button.data('id'))
                 }
-                
+
                 modal.find('#input-type').val(type)
             })
-            
+
             $('#bookmarkDeleteModal').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget)
                 var modal = $(this)
                 modal.find('#delete-input-name').html(button.data('name'))
                 modal.find('#delete-input-id').val(button.data('id'))
             })
-            
+
             $('.list-group-item').on('mouseover',function(){
                 $(this).addClass('list-group-hover');
                 $(this).find('.controls').removeClass('hidden');
@@ -280,9 +280,9 @@
                 $(this).removeClass('list-group-hover');
                 $(this).find('.controls').addClass('hidden');
             })
-            
+
         })
-    
+
     </script>
 </body>
-</html> 
+</html>
