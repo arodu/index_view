@@ -9,13 +9,14 @@
         $rep = opendir($_SERVER['DOCUMENT_ROOT'].$path);
         $out = [];
         while ($file = readdir($rep)){
+            $file = $_SERVER['DOCUMENT_ROOT'].$path.'/'.$file;
             if( !in_array($file, $deny_file) ){
                 if (is_dir($file)){
-                    $out[] = ['name'=>$file, 'route'=>$path.$file, 'type'=>'folder'];
+                    $out[] = ['name'=>$file, 'route'=>$path.'/'.$file, 'type'=>'folder'];
                 }elseif(is_file($file)){
-                    $out[] = ['name'=>$file, 'route'=>$path.$file, 'type'=>'file'];
+                    $out[] = ['name'=>$file, 'route'=>$path.'/'.$file, 'type'=>'file'];
                 }else{
-                    $out[] = ['name'=>$file, 'route'=>$path.$file, 'type'=>'link'];
+                    $out[] = ['name'=>$file, 'route'=>$path.'/'.$file, 'type'=>'link'];
                 }
             }
         }
@@ -23,7 +24,7 @@
     }
 
     function getFileLink($path, $name, $dir = false){
-        if(file_exists($_SERVER['DOCUMENT_ROOT'].$path) && !$dir){
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].'/'.$path) && !$dir){
             return '<li><a href="'.$path.'">'.$name.'</a></li>';
         }elseif(file_exists($dir)){
             return '<li><a href="'.$path.'">'.$name.'</a></li>';
@@ -72,6 +73,28 @@
             }
         }
         return $alert;
+    }
+
+    function debug($var, $return = false){
+      $trace = debug_backtrace();
+      foreach ($trace as $t) {
+        if($t['function'] == __FUNCTION__){
+          $file = $t['file'];
+          $line = $t['line'];
+          break;
+        }
+      }
+      $out  = '<div class="debug">';
+      $out .= '<div class="file"><strong>'.$file.'</strong> (Line <strong>'.$line.'</strong>)</div>';
+      $out .= '<pre class="code">';
+      $out .= print_r($var, true);
+      $out .= '</pre>';
+      $out .= '</div>';
+      if($return){
+        return $out;
+      }else{
+        echo $out;
+      }
     }
 
 ?>

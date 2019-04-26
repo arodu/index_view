@@ -1,22 +1,29 @@
 <?php
+    $current_dir =  ( !empty($_GET['dir']) ? $_GET['dir'] : '');
+
     $config = [
         'server_software' => @array_shift(explode(' ', $_SERVER['SERVER_SOFTWARE'])),
         'lang' => substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2),
         'server_name' => $_SERVER['SERVER_NAME'],
-        'folder' => dirname($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME']).'/',
-        'path' => ( dirname($_SERVER['SCRIPT_NAME'])=='/' ? '/' : dirname($_SERVER['SCRIPT_NAME']).'/' ),
+        'folder' => dirname($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME']).$current_dir,
+        //'path' => ( dirname($_SERVER['SCRIPT_NAME'])=='/' ? '/' : dirname($_SERVER['SCRIPT_NAME']).'/' ),
+        'path' => ( empty($current_dir) ? '/' : $current_dir),
         'remote_addr' => $_SERVER['REMOTE_ADDR'],
         'server_addr' => $_SERVER['SERVER_ADDR'],
         'php_version' => phpversion(),
     ];
 
-    if(file_exists($dir.'/lang/'.$config['lang'].'.php')){
-        include($dir.'/lang/'.$config['lang'].'.php');
+
+    echo '<br/><br/><pre>'; print_r($config); echo '</pre>';
+    //exit();
+
+    if(file_exists($core_dir.'/lang/'.$config['lang'].'.php')){
+        require_once($core_dir.'/lang/'.$config['lang'].'.php');
     }else{
-        include($dir.'/lang/en.php');
+        require_once($core_dir.'/lang/en.php');
     }
 
-    include($dir.'/bin/functions.php');
+    require_once($core_dir.'/bin/functions.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,7 +55,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<?= $config['path'] ?>"><?php echo $config['server_software'] ?></a>
+                <a class="navbar-brand" href="/"><?php echo $config['server_software'] ?></a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
 
@@ -76,6 +83,12 @@
     </nav>
 
     <div class="container">
+
+        <!--<ol class="breadcrumb">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Library</a></li>
+          <li class="active">Data</li>
+        </ol>-->
 
         <?php  if(!is_writable($data_dir)): ?>
             <div class="alert alert-warning">
@@ -130,6 +143,14 @@
                                     default: $icon='glyphicon glyphicon-file'; break;
                                 }
 
+                                debug($file);
+
+                                $url = $file['route'];
+
+                                if($file['type']=='folder'){
+                                  $url = '/?dir='.$file['route'];
+                                }
+
                                 /*
                                 $icon = function($file['type']){
                                     switch($file['type']){
@@ -142,7 +163,9 @@
 
                                 ?>
                                 <span class="list-group-item" >
-                                    <a href="<?= $file['route'] ?>">
+
+
+                                    <a href="<?= $url ?>">
                                         <span class="<?= $icon ?>" aria-hidden="true"></span>
                                         &nbsp;&nbsp;<?= $file['name'] ?>
                                     </a>
