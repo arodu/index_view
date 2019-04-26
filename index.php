@@ -1,5 +1,5 @@
 <?php
     $index_path = '/index_view';
-    $dir = $_SERVER['DOCUMENT_ROOT'].$index_path;
-    include($dir.'/bin/view.php');
+    $core_dir = $_SERVER['DOCUMENT_ROOT'].$index_path;
+    include($core_dir.'/bin/view.php');
 ?>

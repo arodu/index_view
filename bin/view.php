@@ -10,13 +10,13 @@
         'php_version' => phpversion(),
     ];
 
-    if(file_exists($dir.'/lang/'.$config['lang'].'.php')){
-        include($dir.'/lang/'.$config['lang'].'.php');
+    if(file_exists($core_dir.'/lang/'.$config['lang'].'.php')){
+        include($core_dir.'/lang/'.$config['lang'].'.php');
     }else{
-        include($dir.'/lang/en.php');
+        include($core_dir.'/lang/en.php');
     }
 
-    include($dir.'/bin/functions.php');
+    include($core_dir.'/bin/functions.php');
 ?>
 <!DOCTYPE html>
 <html>
