@@ -1,22 +1,23 @@
 <?php
+    define('DS', DIRECTORY_SEPARATOR);
     $config = [
         'server_software' => @array_shift(explode(' ', $_SERVER['SERVER_SOFTWARE'])),
         'lang' => substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2),
         'server_name' => $_SERVER['SERVER_NAME'],
-        'folder' => dirname($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME']).'/',
-        'path' => ( dirname($_SERVER['SCRIPT_NAME'])=='/' ? '/' : dirname($_SERVER['SCRIPT_NAME']).'/' ),
+        'folder' => dirname($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME']).DS,
+        'path' => ( dirname($_SERVER['SCRIPT_NAME'])==DS ? DS : dirname($_SERVER['SCRIPT_NAME']).DS ),
         'remote_addr' => $_SERVER['REMOTE_ADDR'],
         'server_addr' => $_SERVER['SERVER_ADDR'],
         'php_version' => phpversion(),
     ];
 
-    if(file_exists($core_dir.'/lang/'.$config['lang'].'.php')){
-        include($core_dir.'/lang/'.$config['lang'].'.php');
+    if(file_exists($core_dir.DS.'lang'.DS.$config['lang'].'.php')){
+        include($core_dir.DS.'lang'.DS.$config['lang'].'.php');
     }else{
-        include($core_dir.'/lang/en.php');
+        include($core_dir.DS.'lang'.DS.'en.php');
     }
 
-    include($core_dir.'/bin/functions.php');
+    include($core_dir.DS.'bin'.DS.'functions.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -65,9 +66,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-wrench"></span><?= $lang['options'] ?> <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <?php echo getFileLink($index_path.'/bin/info.php', 'PHP Info') ?>
-                            <?php echo getFileLink('/phpmyadmin', 'PhpMyAdmin') ?>
-                            <?php echo getFileLink('/PhpMyAdmin', 'PhpMyAdmin') ?>
-                            <?php echo getFileLink('/phpmyadmin', 'PhpMyAdmin', '/usr/share/webapps/phpMyAdmin') ?>
+                            <?php echo getFileLink(DS.'phpmyadmin', 'PhpMyAdmin') ?>
+                            <?php echo getFileLink(DS.'phpmyadmin'.DS, 'PhpMyAdmin') ?>
+                            <?php echo getFileLink(DS.'PhpMyAdmin', 'PhpMyAdmin') ?>
+                            <?php echo getFileLink(DS.'phpmyadmin', 'PhpMyAdmin', '/usr/share/webapps/phpMyAdmin') ?>
                         </ul>
                     </li>
                 </ul>
