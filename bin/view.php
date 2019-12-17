@@ -170,10 +170,11 @@
                 <p class="text-muted"><?= $_SERVER['HTTP_USER_AGENT'] ?></p>
             </div>
             <div class="col-md-6 text-right">
-                <p class="text-muted">PHP <?= $config['php_version'] ?></p>
+                <p class="text-muted"><a href="<?= $index_path.'/bin/info.php' ?>">PHP <?= $config['php_version'] ?></a></p>
             </div>
         </div>
     </footer>
+
 
     <div class="modal fade" id="bookmarkModal" tabindex="-1" role="dialog" aria-labelledby="bookmarkModalLabel">
         <div class="modal-dialog" role="document">
