@@ -1,0 +1,15 @@
+{
+    "name": "arodu/index_view",
+    "description": "index dir view",
+    "type": "project",
+    "require": {
+        "twbs/bootstrap": "5.0.0-alpha1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alberto Rodriguez",
+            "email": "arodu.dev@gmail.com"
+        }
+    ]
+}
