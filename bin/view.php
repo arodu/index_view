@@ -1,3 +1,25 @@
+<?php
+    define('DS', DIRECTORY_SEPARATOR);
+    $config = [
+        'server_software' => @array_shift(explode(' ', $_SERVER['SERVER_SOFTWARE'])),
+        'lang' => substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2),
+        'http_host' => $_SERVER['HTTP_HOST'],
+        'folder' => dirname($_SERVER['DOCUMENT_ROOT'].$_SERVER['SCRIPT_NAME']).DS,
+        'path' => ( dirname($_SERVER['SCRIPT_NAME'])==DS ? DS : dirname($_SERVER['SCRIPT_NAME']).DS ),
+        'remote_addr' => $_SERVER['REMOTE_ADDR'],
+        'server_addr' => $_SERVER['SERVER_ADDR'],
+        'php_version' => phpversion(),
+    ];
+
+    if(file_exists($core_dir.DS.'lang'.DS.$config['lang'].'.php')){
+        include($core_dir.DS.'lang'.DS.$config['lang'].'.php');
+    }else{
+        include($core_dir.DS.'lang'.DS.'en.php');
+    }
+
+    include($core_dir.DS.'bin'.DS.'functions.php');
+?>
+
 <!doctype html>
 <html lang="en" class="h-100">
   <head>
@@ -6,7 +28,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.72.0">
-    <title>Sticky Footer Navbar Template · Bootstrap</title>
+    <title><?= $config['http_host'] ?></title>
 
     <link rel="canonical" href="https://v5.getbootstrap.com/docs/5.0/examples/sticky-footer-navbar/">
 
@@ -52,8 +74,9 @@
     <header>
         <!-- Fixed navbar -->
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <div class="container-fluid">
-            <a class="navbar-brand" href="#">Fixed navbar</a>
+            <div class="container">
+            <a class="navbar-brand" href="<?= $config['path'] ?>"><?php echo $config['server_software'] ?></a>
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -79,17 +102,58 @@
     </header>
 
     <!-- Begin page content -->
-    <main class="flex-shrink-0">
+    <main class="flex-shrink-0 mt-4">
     <div class="container">
-        <h1 class="mt-5">Sticky footer with fixed navbar</h1>
-        <p class="lead">Pin a footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code class="small">padding-top: 60px;</code> on the <code class="small">main &gt; .container</code>.</p>
-        <p>Back to <a href="/docs/5.0/examples/sticky-footer/">the default sticky footer</a> minus the navbar.</p>
+      <div class="row">
+
+        <div class="col-md-6">
+          <div class="card border-success mb-4">
+            <div class="card-header bg-success text-light">Bookmarks</div>
+            <div class="card-body text-info"></div>
+            <div class="card-footer"></div>
+          </div>
+
+          <div class="card border-info mb-4">
+            <div class="card-header bg-info text-light d-flex">
+              <span class="card-title">
+                Themes
+                <code class="bg-light">/srv/http/themes</code>  
+              </span>
+
+              <div class="ml-auto dropdown">
+                <button class="btn btn-link btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false"></button>
+                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </div>  
+              
+            </div>
+            <div class="card-body text-info"></div>
+            <div class="card-footer"></div>
+          </div>
+
+        </div>
+
+        <div class="col-md-6">
+          <div class="card border-dark mb-4">
+            <div class="card-header bg-dark text-light">Files in folder <code>/srv/http/</code></div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Cras justo odio</li>
+              <li class="list-group-item">Dapibus ac facilisis in</li>
+              <li class="list-group-item">Vestibulum at eros</li>
+            </ul>
+          </div>
+        </div>
     </div>
     </main>
 
     <footer class="footer mt-auto py-3 bg-light">
-    <div class="container">
-        <span class="text-muted">Place sticky footer content here.</span>
+    <div class="container d-md-flex">
+          <div class="text-muted"><?= $_SERVER['HTTP_USER_AGENT'] ?></div>
+          <div class="text-muted ml-auto"><a href="<?= $index_path.'/bin/info.php' ?>">PHP <?= $config['php_version'] ?></a></div>
+        <!--<span class="text-muted">Place sticky footer content here.</span>-->
     </div>
     </footer>
 
