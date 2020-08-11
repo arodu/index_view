@@ -13,7 +13,7 @@
                 if (is_dir($file)){
                     $out[] = ['name'=>$file, 'route'=>$path.$file, 'type'=>'folder'];
                 }elseif(is_file($file)){
-                    $out[] = ['name'=>$file, 'route'=>$path.$file, 'type'=>'file'];
+                    $out[] = ['name'=>$file, 'route'=>$path.DS.$file, 'type'=>'file'];
                 }else{
                     $out[] = ['name'=>$file, 'route'=>$path.$file, 'type'=>'link'];
                 }

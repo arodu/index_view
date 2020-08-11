@@ -8,10 +8,20 @@
         $deny_file = ['', '.', '..', 'index', 'index_view', 'index.php'];
         $rep = opendir($_SERVER['DOCUMENT_ROOT'].$path);
         $out = [];
+
+        //var_dump($path);
+
+        
+
         while ($file = readdir($rep)){
             if( !in_array($file, $deny_file) ){
                 if (is_dir($file)){
-                    $out[] = ['name'=>$file, 'route'=>$path.$file, 'type'=>'folder'];
+                    if( file_exists($file.'/index.php') || file_exists($file.'/index.html') ){
+                        $out[] = ['name'=>$file, 'route'=>$path.$file, 'type'=>'app'];
+                    }else{
+                        $out[] = ['name'=>$file, 'route'=>$path.$file, 'type'=>'folder'];
+                    }
+
                 }elseif(is_file($file)){
                     $out[] = ['name'=>$file, 'route'=>$path.$file, 'type'=>'file'];
                 }else{
@@ -19,6 +29,9 @@
                 }
             }
         }
+
+        //var_dump($out);
+
         return $out;
     }
 
